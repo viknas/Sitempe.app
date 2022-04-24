@@ -9,6 +9,10 @@ class CreateRequest extends CreateRecord
 {
     protected static string $resource = RequestResource::class;
 
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {

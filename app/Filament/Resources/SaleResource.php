@@ -26,6 +26,7 @@ class SaleResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-collection';
     protected static ?string $label = 'Penjualan produk';
     protected static ?string $pluralLabel = 'Penjualan Produk';
+    protected static ?string $navigationGroup = 'Pencatatan Keuangan';
 
     public $totalPrice;
 

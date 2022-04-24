@@ -24,6 +24,7 @@ class RequestResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-collection';
     protected static ?string $label = 'Permintaan produk';
     protected static ?string $pluralLabel = 'Permintaan produk';
+    protected static ?string $navigationGroup = 'Pencatatan Keuangan';
 
     public static function form(Form $form): Form
     {

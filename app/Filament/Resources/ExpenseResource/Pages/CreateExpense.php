@@ -14,4 +14,9 @@ class CreateExpense extends CreateRecord
         $data['id_user'] = auth()->id();
         return $data;
     }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }
