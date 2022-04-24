@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class RequestDetail extends Model
+class SaleDetail extends Model
 {
     use HasFactory;
 
@@ -18,8 +18,8 @@ class RequestDetail extends Model
         return $this->belongsTo(Product::class, 'id_produk');
     }
 
-    public function request()
+    public function sale()
     {
-        return $this->belongsTo(Request::class, 'id_penjualan');
+        return $this->belongsTo(Sale::class, 'id_penjualan');
     }
 }

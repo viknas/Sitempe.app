@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('data_pendapatan', function (Blueprint $table) {
+        Schema::create('penjualan_produk', function (Blueprint $table) {
             $table->id();
             $table->date('tanggal');
-            $table->unsignedInteger('jumlah_produk');
-            $table->unsignedInteger('harga');
+            $table->unsignedInteger('jumlah_produk')->default(0);
+            $table->unsignedInteger('total_harga')->default(0);
+            $table->enum('tipe', ['LANGSUNG', 'DIPESAN']);
+            $table->enum('status', ['MENUNGGU KONFIRMASI', 'DIKONFIRMASI', 'SELESAI', null])->default(null)->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('data_pendapatan');
+        Schema::dropIfExists('permintaan_produk');
     }
 };

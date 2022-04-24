@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Request extends Model
+class Sale extends Model
 {
     use HasFactory;
 
@@ -19,6 +19,6 @@ class Request extends Model
 
     public function details()
     {
-        return $this->hasMany(RequestDetail::class, 'id_penjualan');
+        return $this->hasMany(SaleDetail::class, 'id_penjualan');
     }
 }

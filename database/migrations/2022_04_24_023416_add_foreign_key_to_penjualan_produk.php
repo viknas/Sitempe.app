@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('permintaan_produk', function (Blueprint $table) {
+        Schema::table('penjualan_produk', function (Blueprint $table) {
             $table->after('id', function ($table) {
                 $table->foreignId('id_user')->constrained('users')->cascadeOnUpdate()->restrictOnDelete();
             });
@@ -27,7 +27,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('permintaan_produk', function (Blueprint $table) {
+        Schema::table('penjualan_produk', function (Blueprint $table) {
             //
         });
     }

@@ -41,9 +41,10 @@ class RequestResource extends Resource
                     ]),
                     HasManyRepeater::make('details')
                         ->relationship('details')
+                        ->label('Detail')
                         ->schema([
                             Forms\Components\Grid::make()->schema([
-                                Forms\Components\BelongsToSelect::make('id_produk')->searchable()
+                                Forms\Components\BelongsToSelect::make('id_produk')->label('Produk')->searchable()
                                 ->relationship('product', 'nama_produk'),
                                 Forms\Components\TextInput::make('jumlah_produk')->numeric()->required(),
                                 Forms\Components\TextInput::make('harga')->numeric()->required()
