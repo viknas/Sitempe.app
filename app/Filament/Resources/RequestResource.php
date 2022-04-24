@@ -2,18 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\RequestDetailResource\RelationManagers\DetailsRelationManager;
 use App\Filament\Resources\RequestResource\Pages;
-use App\Filament\Resources\RequestResource\RelationManagers;
 use App\Models\Request;
-use App\Models\RequestDetail;
-use Filament\Forms;
+use Filament\Forms\Components\BelongsToSelect;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\HasManyRepeater;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
-use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Livewire\Component;
 
 class RequestResource extends Resource
@@ -27,11 +29,11 @@ class RequestResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Card::make()->schema([
-                    Forms\Components\Grid::make()->schema([
-                        Forms\Components\DatePicker::make('tanggal')
+                Card::make()->schema([
+                    Grid::make()->schema([
+                        DatePicker::make('tanggal')
                             ->required(),
-                        Forms\Components\Select::make('status')->options([
+                        Select::make('status')->options([
                             'MENUNGGU KONFIRMASI' => 'Menunggu Konfirmasi',
                             'DIKONFIRMASI' => 'Dikonfirmasi',
                             'SELESAI' => 'Selesai',
@@ -43,19 +45,19 @@ class RequestResource extends Resource
                         ->relationship('details')
                         ->label('Detail')
                         ->schema([
-                            Forms\Components\Grid::make()->schema([
-                                Forms\Components\BelongsToSelect::make('id_produk')->label('Produk')->searchable()
-                                ->relationship('product', 'nama_produk'),
-                                Forms\Components\TextInput::make('jumlah_produk')->numeric()->required(),
-                                Forms\Components\TextInput::make('harga')->numeric()->required()
+                            Grid::make()->schema([
+                                BelongsToSelect::make('id_produk')->label('Produk')->searchable()
+                                    ->relationship('product', 'nama_produk'),
+                                TextInput::make('jumlah_produk')->numeric()->required(),
+                                TextInput::make('harga')->numeric()->required()
                             ])->columns(3)
                         ])->minItems(1)
                 ])->columnSpan(2),
-                Forms\Components\Card::make([
-                    Forms\Components\Placeholder::make('created_at')
+                Card::make([
+                    Placeholder::make('created_at')
                         ->label('Dibuat')
                         ->content(fn (?Request $record): string => $record ? $record->created_at->diffForHumans() : '-'),
-                    Forms\Components\Placeholder::make('updated_at')
+                    Placeholder::make('updated_at')
                         ->label('Terakhir diubah')
                         ->content(fn (?Request $record): string => $record ? $record->updated_at->diffForHumans() : '-'),
                 ])->columnSpan(1)
@@ -70,11 +72,14 @@ class RequestResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user.nama')->label('Admin'),
-                Tables\Columns\TextColumn::make('tanggal')->date(),
-                Tables\Columns\TextColumn::make('created_at')->label('Dibuat')
+
+                TextColumn::make('user.nama')->label('Reseller'),
+                TextColumn::make('jumlah_produk'),
+                TextColumn::make('total_harga')->money('idr', true),
+                TextColumn::make('tanggal')->date(),
+                TextColumn::make('created_at')->label('Dibuat')
                     ->dateTime(),
-                Tables\Columns\TextColumn::make('updated_at')->label('Terakhir diubah')
+                TextColumn::make('updated_at')->label('Terakhir diubah')
                     ->dateTime(),
             ])
             ->filters([
