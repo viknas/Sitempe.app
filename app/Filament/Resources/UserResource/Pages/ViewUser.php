@@ -32,7 +32,7 @@ class ViewUser extends Page implements HasForms
             'alamat' => $user->alamat,
             'kecamatan' => $user->district->kecamatan,
             'kabupaten' => $user->district->kecamatan,
-            'foto_profil' => $user->district->foto_profil
+            'foto_profil' => $user->foto_profil
         ]);
     }
 
