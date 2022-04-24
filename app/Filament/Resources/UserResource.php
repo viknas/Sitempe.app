@@ -118,10 +118,6 @@ class UserResource extends Resource
                 Tables\Columns\ImageColumn::make('foto_profil')->rounded(),
                 Tables\Columns\TextColumn::make('district.kecamatan')->label('Kecamatan'),
                 Tables\Columns\TextColumn::make('regency.kabupaten')->label('Kabupaten'),
-                Tables\Columns\TextColumn::make('created_at')->label('Dibuat')
-                    ->dateTime(),
-                Tables\Columns\TextColumn::make('updated_at')->label('Terakhir diubah')
-                    ->dateTime(),
             ])
             ->filters([
                 //
