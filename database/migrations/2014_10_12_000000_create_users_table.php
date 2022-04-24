@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->text('alamat')->nullable();
-            $table->string('foto_profil', 50)->nullable();
+            $table->string('foto_profil')->nullable();
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
