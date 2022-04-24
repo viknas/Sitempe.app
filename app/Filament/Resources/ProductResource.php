@@ -57,6 +57,7 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('foto_produk')->height(200),
                 Tables\Columns\TextColumn::make('nama_produk'),
                 Tables\Columns\TextColumn::make('harga')->money('idr', true),
                 Tables\Columns\TextColumn::make('deskripsi'),
