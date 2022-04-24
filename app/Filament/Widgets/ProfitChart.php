@@ -2,7 +2,7 @@
 
 namespace App\Filament\Widgets;
 
-use App\Models\Income;
+use App\Models\Sale;
 use Filament\Widgets\LineChartWidget;
 use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
@@ -41,31 +41,23 @@ class ProfitChart extends LineChartWidget
     {
 
         $date = $this->determineDate();
-        $data = null;
+
+        $query = Trend::query(Sale::where('tipe', '=', 'LANGSUNG')->orWhere('status', '=', 'DIKONFIRMASI'))
+            ->between(start: $date[0], end: $date[1]);
 
         if ($this->filter == 'today') {
-            return $data = Trend::model(Income::class)
-                ->between(start: $date[0], end: $date[1])
-                ->perHour()
-                ->sum('harga');
+            return $query->perHour()
+                ->sum('total_harga');
         } else if ($this->filter == 'week') {
-            return  $data = Trend::model(Income::class)
-                ->between(start: $date[0], end: $date[1])
-                ->perDay()
-                ->sum('harga');
+            return $query->perDay()
+                ->sum('total_harga');
         } else if ($this->filter == 'month') {
-            return  $data = Trend::model(Income::class)
-                ->between(start: $date[0], end: $date[1])
-                ->perMonth()
-                ->sum('harga');
+            return $query->perMonth()
+                ->sum('total_harga');
         } else if ($this->filter == 'year') {
-            return  $data = Trend::model(Income::class)
-                ->between(start: $date[0], end: $date[1])
-                ->perYear()
-                ->sum('harga');
+            return $query->perYear()
+                ->sum('total_harga');
         }
-
-        return $data;
     }
 
     protected function getData(): array
