@@ -9,6 +9,6 @@ class Income extends Model
 {
     use HasFactory;
 
-    protected $table = 'data_pendapatan';
+    protected $table = 'penjualan_produk';
     protected $guarded = ['id'];
 }
