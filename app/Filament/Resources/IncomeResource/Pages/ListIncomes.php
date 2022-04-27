@@ -9,9 +9,4 @@ use Illuminate\Database\Eloquent\Builder;
 class ListIncomes extends ListRecords
 {
     protected static string $resource = IncomeResource::class;
-
-    protected function getTableQuery(): Builder
-    {
-        return parent::getTableQuery()->where('tipe', '=', 'LANGSUNG')->orWhere('status', '=', 'DIKONFIRMASI');
-    }
 }

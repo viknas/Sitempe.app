@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\Income;
 use App\Models\Sale;
 use Filament\Widgets\LineChartWidget;
 use Flowframe\Trend\Trend;
@@ -42,8 +43,8 @@ class ProfitChart extends LineChartWidget
 
         $date = $this->determineDate();
 
-        $query = Trend::query(Sale::where('tipe', '=', 'LANGSUNG')->orWhere('status', '=', 'DIKONFIRMASI'))
-            ->between(start: $date[0], end: $date[1]);
+        $query = Trend::model(Income::class)
+            ->between(start: $date[0], end: $date[1])->dateColumn('tanggal');
 
         if ($this->filter == 'today') {
             return $query->perHour()
