@@ -35,7 +35,7 @@ class IncomeResource extends Resource
             ->columns([
                 TextColumn::make('tanggal')
                     ->sortable(),
-                TextColumn::make('jumlah_produk')
+                TextColumn::make('total_produk')
                     ->sortable(),
                 TextColumn::make('total_harga')
                     ->sortable()

@@ -86,7 +86,7 @@ class SaleResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('jumlah_produk'),
+                TextColumn::make('total_produk'),
                 TextColumn::make('total_harga')->money('idr', true),
                 TextColumn::make('tanggal')->date(),
                 TextColumn::make('created_at')->label('Dibuat')
