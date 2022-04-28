@@ -13,8 +13,6 @@ class StatsOverview extends BaseWidget
 {
     public string $todayIncome;
     public string $todayExpense;
-    public string $monthIncome;
-    public string $monthExpense;
 
     public function mount()
     {
@@ -36,8 +34,6 @@ class StatsOverview extends BaseWidget
         return [
             Card::make('Pendapatan hari ini', $this->todayIncome),
             Card::make('Pengeluaran hari ini', $this->todayExpense),
-            Card::make('Pendapatan bulan ini ', 'Rp0,00'),
-            Card::make('Pengeluaran bulan ini', 'Rp0,00'),
         ];
     }
 }

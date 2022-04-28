@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Widgets\StatsMonthOverview;
 use App\Filament\Widgets\StatsOverview;
 use Filament\Pages\Page;
 
@@ -14,7 +15,8 @@ class Dashboard extends Page
     protected function getHeaderWidgets(): array
     {
         return [
-            StatsOverview::class
+            StatsOverview::class,
+            StatsMonthOverview::class
         ];
     }
 }
