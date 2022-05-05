@@ -5,12 +5,17 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
-use App\Models\Produk;
-use Filament\Forms;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
-use Filament\Tables;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
 
 class ProductResource extends Resource
 {
@@ -23,26 +28,32 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Card::make()->schema([
-                    Forms\Components\Grid::make()->schema([
-                        Forms\Components\TextInput::make('nama_produk')
+                Card::make()->schema([
+                    Grid::make()->schema([
+                        TextInput::make('nama_produk')
                             ->required()
                             ->maxLength(40),
-                        Forms\Components\TextInput::make('harga')
-                            ->required()->numeric(),
-                        Forms\Components\Textarea::make('deskripsi')
+                        TextInput::make('harga')
+                            ->required()
+                            ->numeric(),
+                        Textarea::make('deskripsi')
                             ->maxLength(65535),
-                        Forms\Components\TextInput::make('stok')
-                            ->required()->numeric(),
-                        Forms\Components\FileUpload::make('foto_produk')->image()
-                            ->required()->columnSpan(2)->imagePreviewHeight('300')->directory('productImages'),
+                        TextInput::make('stok')
+                            ->required()
+                            ->numeric(),
+                        FileUpload::make('foto_produk')
+                            ->image()
+                            ->required()
+                            ->columnSpan(2)
+                            ->imagePreviewHeight('300')
+                            ->directory('productImages'),
                     ])
                 ])->columnSpan(2),
-                Forms\Components\Card::make([
-                    Forms\Components\Placeholder::make('created_at')
+                Card::make([
+                    Placeholder::make('created_at')
                         ->label('Dibuat')
                         ->content(fn (?Product $record): string => $record ? $record->created_at->diffForHumans() : '-'),
-                    Forms\Components\Placeholder::make('updated_at')
+                    Placeholder::make('updated_at')
                         ->label('Terakhir diubah')
                         ->content(fn (?Product $record): string => $record ? $record->updated_at->diffForHumans() : '-'),
                 ])->columnSpan(1)
@@ -57,14 +68,27 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('foto_produk')->height(200),
-                Tables\Columns\TextColumn::make('nama_produk'),
-                Tables\Columns\TextColumn::make('harga')->money('idr', true),
-                Tables\Columns\TextColumn::make('deskripsi'),
-                Tables\Columns\TextColumn::make('stok'),
-                Tables\Columns\TextColumn::make('created_at')->label('Dibuat')
+                ImageColumn::make('foto_produk')
+                    ->height(200),
+                TextColumn::make('nama_produk')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('harga')
+                    ->sortable()
+                    ->searchable()
+                    ->money('idr', true),
+                TextColumn::make('deskripsi')
+                    ->searchable(),
+                TextColumn::make('stok')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('created_at')
+                    ->sortable()
+                    ->label('Dibuat')
                     ->dateTime(),
-                Tables\Columns\TextColumn::make('updated_at')->label('Terakhir diubah')
+                TextColumn::make('updated_at')
+                    ->sortable()
+                    ->label('Terakhir diubah')
                     ->dateTime(),
             ])
             ->filters([

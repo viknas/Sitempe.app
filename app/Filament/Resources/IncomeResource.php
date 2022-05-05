@@ -34,6 +34,7 @@ class IncomeResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('tanggal')
+                    ->searchable()
                     ->sortable(),
                 TextColumn::make('total_produk')
                     ->sortable(),

@@ -28,59 +28,80 @@ class RequestResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Card::make()->schema([
-                    Grid::make()->schema([
-                        DatePicker::make('tanggal')
-                            ->required(),
-                        Select::make('status')->options([
+        return $form->schema([
+            Card::make()->schema([
+                Grid::make()->schema([
+                    DatePicker::make('tanggal')
+                        ->required(),
+                    Select::make('status')
+                        ->options([
                             'MENUNGGU KONFIRMASI' => 'Menunggu Konfirmasi',
                             'DIKONFIRMASI' => 'Dikonfirmasi',
                             'SELESAI' => 'Selesai',
                         ])
-                            ->required()->default('MENUNGGU KONFIRMASI')
-                            ->disabled(fn (Component $livewire): bool => $livewire instanceof Pages\CreateRequest),
-                    ]),
-                    HasManyRepeater::make('details')
-                        ->relationship('details')
-                        ->label('Detail')
-                        ->schema([
-                            Grid::make()->schema([
-                                BelongsToSelect::make('id_produk')->label('Produk')->searchable()
-                                    ->relationship('product', 'nama_produk'),
-                                TextInput::make('jumlah_produk')->numeric()->required(),
-                                TextInput::make('harga')->numeric()->required()
-                            ])->columns(3)
-                        ])->minItems(1)
-                ])->columnSpan(2),
-                Card::make([
-                    Placeholder::make('created_at')
-                        ->label('Dibuat')
-                        ->content(fn (?Request $record): string => $record ? $record->created_at->diffForHumans() : '-'),
-                    Placeholder::make('updated_at')
-                        ->label('Terakhir diubah')
-                        ->content(fn (?Request $record): string => $record ? $record->updated_at->diffForHumans() : '-'),
-                ])->columnSpan(1)
+                        ->required()
+                        ->default('MENUNGGU KONFIRMASI')
+                        ->disabled(fn (Component $livewire): bool => $livewire instanceof Pages\CreateRequest),
+                ]),
+                HasManyRepeater::make('details')
+                    ->relationship('details')
+                    ->label('Detail')
+                    ->schema([
+                        Grid::make()->schema([
+                            BelongsToSelect::make('id_produk')
+                                ->label('Produk')
+                                ->searchable()
+                                ->relationship('product', 'nama_produk'),
+                            TextInput::make('jumlah_produk')
+                                ->numeric()
+                                ->required(),
+                            TextInput::make('harga')
+                                ->numeric()
+                                ->required()
+                        ])->columns(3)
+                    ])->minItems(1)
+            ])->columnSpan(2),
+            Card::make([
+                Placeholder::make('created_at')
+                    ->label('Dibuat')
+                    ->content(fn (?Request $record): string => $record ? $record->created_at->diffForHumans() : '-'),
+                Placeholder::make('updated_at')
+                    ->label('Terakhir diubah')
+                    ->content(fn (?Request $record): string => $record ? $record->updated_at->diffForHumans() : '-'),
+            ])->columnSpan(1)
 
-            ])->columns([
-                'sm' => 3,
-                'lg' => null,
-            ]);
+        ])->columns([
+            'sm' => 3,
+            'lg' => null,
+        ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-
-                TextColumn::make('user.nama')->label('Reseller'),
-                TextColumn::make('jumlah_produk'),
-                TextColumn::make('total_harga')->money('idr', true),
-                TextColumn::make('tanggal')->date(),
-                TextColumn::make('created_at')->label('Dibuat')
+                TextColumn::make('user.nama')
+                    ->sortable()
+                    ->searchable()
+                    ->label('Reseller'),
+                TextColumn::make('jumlah_produk')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('total_harga')
+                    ->sortable()
+                    ->searchable()
+                    ->money('idr', true),
+                TextColumn::make('tanggal')
+                    ->sortable()
+                    ->searchable()
+                    ->date(),
+                TextColumn::make('created_at')
+                    ->sortable()
+                    ->label('Dibuat')
                     ->dateTime(),
-                TextColumn::make('updated_at')->label('Terakhir diubah')
+                TextColumn::make('updated_at')
+                    ->sortable()
+                    ->label('Terakhir diubah')
                     ->dateTime(),
             ])
             ->filters([

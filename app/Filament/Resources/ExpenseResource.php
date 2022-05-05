@@ -6,11 +6,17 @@ use App\Filament\Resources\ExpenseResource\Pages;
 use App\Filament\Resources\ExpenseResource\RelationManagers;
 use App\Models\Expense;
 use Filament\Forms;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 
 class ExpenseResource extends Resource
 {
@@ -25,25 +31,29 @@ class ExpenseResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Card::make()->schema([
-                    Forms\Components\Grid::make()->schema([
-                        Forms\Components\DatePicker::make('tanggal')
-                            ->required()->default(now()),
-                        Forms\Components\TextInput::make('jumlah_pengeluaran')
-                            ->required()->numeric()->mask(fn (TextInput\Mask $mask) => $mask
+                Card::make()->schema([
+                    Grid::make()->schema([
+                        DatePicker::make('tanggal')
+                            ->required()
+                            ->default(now()),
+                        TextInput::make('jumlah_pengeluaran')
+                            ->required()
+                            ->numeric()
+                            ->mask(fn (TextInput\Mask $mask) => $mask
                                 ->numeric()
                                 ->integer()
                                 ->minValue(1)
                                 ->thousandsSeparator('.'),),
-                        Forms\Components\Textarea::make('keterangan')
-                            ->maxLength(65535)->columnSpan(2),
+                        Textarea::make('keterangan')
+                            ->maxLength(65535)
+                            ->columnSpan(2),
                     ])
                 ])->columnSpan(2),
-                Forms\Components\Card::make([
-                    Forms\Components\Placeholder::make('created_at')
+                Card::make([
+                    Placeholder::make('created_at')
                         ->label('Dibuat')
                         ->content(fn (?Expense $record): string => $record ? $record->created_at->diffForHumans() : '-'),
-                    Forms\Components\Placeholder::make('updated_at')
+                    Placeholder::make('updated_at')
                         ->label('Terakhir diubah')
                         ->content(fn (?Expense $record): string => $record ? $record->updated_at->diffForHumans() : '-'),
                 ])->columnSpan(1)
@@ -58,13 +68,28 @@ class ExpenseResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('tanggal')->date(),
-                Tables\Columns\TextColumn::make('jumlah_pengeluaran')->money('idr', true),
-                Tables\Columns\TextColumn::make('keterangan')->limit(),
-                Tables\Columns\TextColumn::make('user.nama')->label('Admin'),
-                Tables\Columns\TextColumn::make('created_at')->label('Dibuat')
+                TextColumn::make('tanggal')
+                    ->sortable()
+                    ->searchable()
+                    ->date(),
+                TextColumn::make('jumlah_pengeluaran')
+                    ->sortable()
+                    ->searchable()
+                    ->money('idr', true),
+                TextColumn::make('keterangan')
+                    ->searchable()
+                    ->limit(),
+                TextColumn::make('user.nama')
+                    ->sortable()
+                    ->searchable()
+                    ->label('Admin'),
+                TextColumn::make('created_at')
+                    ->sortable()
+                    ->label('Dibuat')
                     ->dateTime(),
-                Tables\Columns\TextColumn::make('updated_at')->label('Terakhir diubah')
+                TextColumn::make('updated_at')
+                    ->sortable()
+                    ->label('Terakhir diubah')
                     ->dateTime(),
             ])
             ->filters([

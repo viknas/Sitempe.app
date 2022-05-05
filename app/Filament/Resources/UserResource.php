@@ -6,10 +6,19 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\BelongsToSelect;
+use Filament\Forms\Components\Card;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
 use Livewire\Component;
 
 class UserResource extends Resource
@@ -25,9 +34,10 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Card::make()->schema([
-                    Forms\Components\Grid::make()->schema([
-                        Forms\Components\FileUpload::make('foto_profil')
+
+                Card::make()->schema([
+                    Grid::make()->schema([
+                        FileUpload::make('foto_profil')
                             ->image()
                             ->avatar()
                             ->imageCropAspectRatio('1:1')
@@ -35,55 +45,51 @@ class UserResource extends Resource
                             ->imageResizeTargetHeight('300')
                             ->required()->columnSpan(2)
                             ->imagePreviewHeight('300')->directory('accountImages'),
-                        Forms\Components\TextInput::make('nama')
+                        TextInput::make('nama')
                             ->required(),
-                        Forms\Components\TextInput::make('email')
+                        TextInput::make('email')
                             ->required(),
-                        Forms\Components\TextInput::make('alamat'),
-                        Forms\Components\TextInput::make('nomor_hp')
+                        TextInput::make('alamat'),
+                        TextInput::make('nomor_hp')
                             ->tel(),
-                        Forms\Components\BelongsToSelect::make('id_kecamatan')
+                        BelongsToSelect::make('id_kecamatan')
                             ->relationship('district', 'kecamatan')
                             ->searchable()
                             ->required(),
-                        Forms\Components\BelongsToSelect::make('id_kabupaten')
+                        BelongsToSelect::make('id_kabupaten')
                             ->relationship('regency', 'kabupaten')
                             ->searchable()
                             ->required(),
-
-                        Forms\Components\TextInput::make('password')
+                        TextInput::make('password')
                             ->label('Password')
                             ->password()
                             ->rules(['confirmed'])
-                            ->columnSpan(2)
-                            ->hidden(fn (Component $livewire): bool => $livewire instanceof Pages\EditUser),
-                        Forms\Components\TextInput::make('password_confirmation')
+                            ->columnSpan(2),
+                        TextInput::make('password_confirmation')
                             ->label('Verifikasi Password')
                             ->password()
                             ->rules([
                                 'required_with:password',
                             ])->columnSpan(2)
-                            ->hidden(fn (Component $livewire): bool => $livewire instanceof Pages\EditUser),
                     ]),
-
-                    Forms\Components\Section::make('Ubah Kata Sandi')
+                    Section::make('Ubah Kata Sandi')
                         ->columns(2)
                         ->schema([
-                            Forms\Components\TextInput::make('current_password')
+                            TextInput::make('current_password')
                                 ->label('Password Sekarang')
                                 ->password()
                                 ->rules(['required_with:password'])
                                 ->currentPassword()
                                 ->autocomplete('off')
                                 ->columnSpan(1),
-                            Forms\Components\Grid::make()
+                            Grid::make()
                                 ->schema([
-                                    Forms\Components\TextInput::make('password')
+                                    TextInput::make('password')
                                         ->label('Password Baru')
                                         ->password()
                                         ->rules(['confirmed'])
                                         ->autocomplete('new-password'),
-                                    Forms\Components\TextInput::make('password_confirmation')
+                                    TextInput::make('password_confirmation')
                                         ->label('Verifikasi Password')
                                         ->password()
                                         ->rules([
@@ -93,11 +99,11 @@ class UserResource extends Resource
                                 ]),
                         ]),
                 ])->columnSpan(2),
-                Forms\Components\Card::make([
-                    Forms\Components\Placeholder::make('created_at')
+                Card::make([
+                    Placeholder::make('created_at')
                         ->label('Dibuat')
                         ->content(fn (?User $record): string => $record ? $record->created_at->diffForHumans() : '-'),
-                    Forms\Components\Placeholder::make('updated_at')
+                    Placeholder::make('updated_at')
                         ->label('Terakhir diubah')
                         ->content(fn (?User $record): string => $record ? $record->updated_at->diffForHumans() : '-'),
                 ])->columnSpan(1)
@@ -112,12 +118,24 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama'),
-                Tables\Columns\TextColumn::make('email'),
-                Tables\Columns\TextColumn::make('nomor_hp'),
-                Tables\Columns\ImageColumn::make('foto_profil')->rounded(),
-                Tables\Columns\TextColumn::make('district.kecamatan')->label('Kecamatan'),
-                Tables\Columns\TextColumn::make('regency.kabupaten')->label('Kabupaten'),
+                TextColumn::make('nama')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('email')
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('nomor_hp')
+                    ->searchable(),
+                ImageColumn::make('foto_profil')
+                    ->rounded(),
+                TextColumn::make('district.kecamatan')
+                    ->sortable()
+                    ->searchable()
+                    ->label('Kecamatan'),
+                TextColumn::make('regency.kabupaten')
+                    ->sortable()
+                    ->searchable()
+                    ->label('Kabupaten'),
             ])
             ->filters([
                 //

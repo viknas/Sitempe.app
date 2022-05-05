@@ -32,66 +32,75 @@ class SaleResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
-            ->schema([
-                Card::make()->schema([
-                    Grid::make()->schema([
-                        DatePicker::make('tanggal')
-                            ->required()
-                            ->columnSpan(2)
-                            ->default(now()),
-                    ]),
+        return $form->schema([
+            Card::make()->schema([
+                Grid::make()->schema([
+                    DatePicker::make('tanggal')
+                        ->required()
+                        ->columnSpan(2)
+                        ->default(now()),
+                ]),
 
-                    HasManyRepeater::make('details')
-                        ->relationship('details')
-                        ->label('Detail')
-                        ->schema([
-                            Grid::make()->schema([
-                                BelongsToSelect::make('id_produk')
-                                    ->label('Produk')
-                                    ->relationship('product', 'nama_produk')
-                                    ->reactive()
-                                    ->afterStateUpdated(function (Closure $set, $state) {
-                                        $product = Product::find($state);
-                                        $set('harga', $product['harga']);
-                                    }),
-                                TextInput::make('jumlah_produk')
-                                    ->numeric()
-                                    ->required()
-                                    ->reactive()
-                                    ->default(0),
-                                TextInput::make('harga')
-                                    ->numeric()
-                                    ->required()
-                            ])->columns(3)
-                        ])->minItems(1)
-                        ->createItemButtonLabel('Tambah produk')
-                ])->columnSpan(2),
-                Card::make([
-                    Placeholder::make('created_at')
-                        ->label('Dibuat')
-                        ->content(fn (?Sale $record): string => $record ? $record->created_at->diffForHumans() : '-'),
-                    Placeholder::make('updated_at')
-                        ->label('Terakhir diubah')
-                        ->content(fn (?Sale $record): string => $record ? $record->updated_at->diffForHumans() : '-'),
-                ])->columnSpan(1)
+                HasManyRepeater::make('details')
+                    ->relationship('details')
+                    ->label('Detail')
+                    ->schema([
+                        Grid::make()->schema([
+                            BelongsToSelect::make('id_produk')
+                                ->label('Produk')
+                                ->relationship('product', 'nama_produk')
+                                ->reactive()
+                                ->afterStateUpdated(function (Closure $set, $state) {
+                                    $product = Product::find($state);
+                                    $set('harga', $product['harga']);
+                                }),
+                            TextInput::make('jumlah_produk')
+                                ->numeric()
+                                ->required()
+                                ->reactive()
+                                ->default(0),
+                            TextInput::make('harga')
+                                ->numeric()
+                                ->required()
+                        ])->columns(3)
+                    ])->minItems(1)->createItemButtonLabel('Tambah produk')
+            ])->columnSpan(2),
+            Card::make([
+                Placeholder::make('created_at')
+                    ->label('Dibuat')
+                    ->content(fn (?Sale $record): string => $record ? $record->created_at->diffForHumans() : '-'),
+                Placeholder::make('updated_at')
+                    ->label('Terakhir diubah')
+                    ->content(fn (?Sale $record): string => $record ? $record->updated_at->diffForHumans() : '-'),
+            ])->columnSpan(1)
 
-            ])->columns([
-                'sm' => 3,
-                'lg' => null,
-            ]);
+        ])->columns([
+            'sm' => 3,
+            'lg' => null,
+        ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('total_produk'),
-                TextColumn::make('total_harga')->money('idr', true),
-                TextColumn::make('tanggal')->date(),
-                TextColumn::make('created_at')->label('Dibuat')
+                TextColumn::make('total_produk')
+                    ->sortable(),
+                TextColumn::make('total_harga')
+                    ->sortable()
+                    ->searchable()
+                    ->money('idr', true),
+                TextColumn::make('tanggal')
+                    ->sortable()
+                    ->searchable()
+                    ->date(),
+                TextColumn::make('created_at')
+                    ->sortable()
+                    ->label('Dibuat')
                     ->dateTime(),
-                TextColumn::make('updated_at')->label('Terakhir diubah')
+                TextColumn::make('updated_at')
+                    ->sortable()
+                    ->label('Terakhir diubah')
                     ->dateTime(),
             ])
             ->filters([
