@@ -32,6 +32,8 @@ class RequestResource extends Resource
             Card::make()->schema([
                 Grid::make()->schema([
                     DatePicker::make('tanggal')
+                        ->default(now())
+                        ->maxDate(now())
                         ->required(),
                     Select::make('status')
                         ->options([

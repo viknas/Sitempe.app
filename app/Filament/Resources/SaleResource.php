@@ -37,6 +37,7 @@ class SaleResource extends Resource
                 Grid::make()->schema([
                     DatePicker::make('tanggal')
                         ->required()
+                        ->maxDate(now())
                         ->columnSpan(2)
                         ->default(now()),
                 ]),

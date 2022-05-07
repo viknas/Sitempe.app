@@ -35,6 +35,7 @@ class ExpenseResource extends Resource
                     Grid::make()->schema([
                         DatePicker::make('tanggal')
                             ->required()
+                            ->maxDate(now())
                             ->default(now()),
                         TextInput::make('jumlah_pengeluaran')
                             ->required()
