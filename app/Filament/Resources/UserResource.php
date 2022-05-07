@@ -53,10 +53,12 @@ class UserResource extends Resource
                         TextInput::make('nomor_hp')
                             ->tel(),
                         BelongsToSelect::make('id_kecamatan')
+                            ->label('Kecamatan')
                             ->relationship('district', 'kecamatan')
                             ->searchable()
                             ->required(),
                         BelongsToSelect::make('id_kabupaten')
+                            ->label('Kabupaten')
                             ->relationship('regency', 'kabupaten')
                             ->searchable()
                             ->required(),
