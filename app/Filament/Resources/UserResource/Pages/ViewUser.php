@@ -22,9 +22,9 @@ class ViewUser extends Page implements HasForms
     protected static string $resource = UserResource::class;
     protected static string $view = 'filament.resources.user-resource.pages.view-user';
 
-    public function mount($record)
+    public function mount(User $record)
     {
-        $user = User::find($record);
+        $user = $record;
         $this->form->fill([
             'nama' => $user->nama,
             'email' => $user->email,
