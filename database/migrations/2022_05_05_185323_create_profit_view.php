@@ -39,8 +39,7 @@ return new class extends Migration
                 0
                 ) AS pengeluaran,
                 (
-                SELECT
-                    GREATEST(pendapatan - pengeluaran, 0)
+                SELECT (pendapatan - pengeluaran)
             ) AS keuntungan
             FROM
                 incomes_by_month_view;");
