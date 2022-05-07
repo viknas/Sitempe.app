@@ -31,7 +31,7 @@ class ViewUser extends Page implements HasForms
             'nomor_hp' => $user->nomor_hp,
             'alamat' => $user->alamat,
             'kecamatan' => $user->district->kecamatan,
-            'kabupaten' => $user->district->kecamatan,
+            'kabupaten' => $user->regency->kabupaten,
             'foto_profil' => $user->foto_profil
         ]);
     }
