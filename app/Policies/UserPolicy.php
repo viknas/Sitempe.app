@@ -11,29 +11,29 @@ class UserPolicy
 
     public function viewAny(User $user)
     {
-        return true;
+        return $user->isOwner();
     }
 
 
     public function view(User $user, User $userInstance)
     {
-        return true;
+        return $user->isOwner();
     }
 
 
     public function create(User $user)
     {
-        return true;
+        return $user->isOwner();
     }
 
     public function update(User $user, User $userInstance)
     {
-        return true;
+        return $user->id == $userInstance->id;
     }
 
     public function delete(User $user, User $userInstance)
     {
-        return false;
+        return $user->isOwner();
     }
 
     public function deleteAny(User $user)

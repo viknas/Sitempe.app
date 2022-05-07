@@ -60,11 +60,11 @@ class Profile extends BaseProfile implements HasForms
         $this->form->getState();
 
         $state = array_filter([
-            'name' => $this->nama,
+            'nama' => $this->nama,
             'email' => $this->email,
             'nomor_hp' => $this->nomor_hp,
             'alamat' => $this->alamat,
-            'foto_profil' => array_values($this->foto_profil)[0],
+            'foto_profil' => array_values($this->foto_profil)[0] ?? null,
             'password' => $this->new_password ? Hash::make($this->new_password) : null,
         ]);
 
@@ -99,7 +99,9 @@ class Profile extends BaseProfile implements HasForms
                         ->imageCropAspectRatio('1:1')
                         ->imageResizeTargetWidth('300')
                         ->imageResizeTargetHeight('300')
-                        ->required()->columnSpan(2)->imagePreviewHeight('300')->directory('accountImages'),
+                        ->columnSpan(2)
+                        ->imagePreviewHeight('300')
+                        ->directory('accountImages'),
                     TextInput::make('nama')
                         ->required(),
                     TextInput::make('email')

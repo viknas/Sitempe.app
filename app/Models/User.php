@@ -27,7 +27,8 @@ class User extends Authenticatable implements HasName, HasAvatar, FilamentUser
         'nomor_hp',
         'foto_profil',
         'id_kecamatan',
-        'id_kabupaten'
+        'id_kabupaten',
+        'role'
     ];
 
     public function canAccessFilament(): bool
@@ -49,6 +50,17 @@ class User extends Authenticatable implements HasName, HasAvatar, FilamentUser
         'password',
         'remember_token',
     ];
+
+    public function isOwner()
+    {
+        return $this->role == 'OWNER';
+    }
+
+    public function isReseller()
+    {
+        return $this->role == 'RESELLER';
+    }
+
 
     /**
      * The attributes that should be cast.
