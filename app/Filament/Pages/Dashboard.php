@@ -14,6 +14,16 @@ class Dashboard extends Page
     protected static string $view = 'filament.pages.dashboard';
     protected static ?int $navigationSort = 1;
 
+    public function mount(): void
+    {
+        abort_unless(auth()->user()->isOwner(), 403);
+    }
+
+    protected static function shouldRegisterNavigation(): bool
+    {
+        return auth()->user()->isOwner();
+    }
+
     protected function getHeaderWidgets(): array
     {
         return [

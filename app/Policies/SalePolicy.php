@@ -12,24 +12,24 @@ class SalePolicy
 
     public function viewAny(User $user)
     {
-        return true;
+        return $user->isOwner();
     }
 
 
     public function view(User $user, Sale $sale)
     {
-        return true;
+        return $user->isOwner();
     }
 
 
     public function create(User $user)
     {
-        return true;
+        return $user->isOwner();
     }
 
     public function update(User $user, Sale $sale)
     {
-        return true;
+        return $user->isOwner();
     }
 
     public function delete(User $user, Sale $sale)

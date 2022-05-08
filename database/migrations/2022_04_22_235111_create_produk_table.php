@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedInteger('harga');
             $table->text('deskripsi')->nullable();
             $table->unsignedInteger('stok');
-            $table->string('foto_produk', 70);
+            $table->string('foto_produk');
             $table->softDeletes();
             $table->timestamps();
         });

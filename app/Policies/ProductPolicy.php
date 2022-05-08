@@ -12,13 +12,13 @@ class ProductPolicy
 
     public function viewAny(User $user)
     {
-        return $user->isOwner();
+        return true;
     }
 
 
     public function view(User $user, Product $product)
     {
-        return $user->isOwner();
+        return $user->isReseller();
     }
 
 

@@ -30,7 +30,14 @@ class RequestPolicy
 
     public function update(User $user, Request $request)
     {
-        return true;
+        if ($request->status == null) {
+            return false;
+        }
+        if ($user->isOwner()) {
+            return true;
+        } else {
+            return $user->id == $request->id_user;
+        }
     }
 
     public function delete(User $user, Request $request)

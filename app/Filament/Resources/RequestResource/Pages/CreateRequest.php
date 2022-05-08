@@ -19,6 +19,10 @@ class CreateRequest extends CreateRecord
         $data['id_user'] = auth()->id();
         $data['tipe'] = 'DIPESAN';
 
+        if (auth()->user()->isReseller()) {
+            $data['status'] = 'MENUNGGU KONFIRMASI';
+        }
+
         return $data;
     }
 }

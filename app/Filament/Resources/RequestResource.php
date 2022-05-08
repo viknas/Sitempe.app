@@ -17,6 +17,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
+use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
 use Livewire\Component;
 
@@ -44,7 +45,8 @@ class RequestResource extends Resource
                         ])
                         ->required()
                         ->default('MENUNGGU KONFIRMASI')
-                        ->disabled(fn (Component $livewire): bool => $livewire instanceof Pages\CreateRequest),
+                        ->disabled(fn (Component $livewire): bool => $livewire instanceof Pages\CreateRequest)
+                        ->hidden(fn (): bool => auth()->user()->isReseller()),
                 ]),
                 HasManyRepeater::make('details')
                     ->relationship('details')
@@ -90,7 +92,17 @@ class RequestResource extends Resource
                 TextColumn::make('user.nama')
                     ->sortable()
                     ->searchable()
+                    ->hidden(fn (): bool => auth()->user()->isReseller())
                     ->label('Reseller'),
+                BadgeColumn::make('status')
+                    ->enum([
+                        'MENUNGGU KONFIRMASI' => 'Menunggu Konfirmasi',
+                        'SELESAI' => 'Selesai',
+                    ])
+                    ->colors([
+                        'warning' => 'MENUNGGU KONFIRMASI',
+                        'success' => 'SELESAI',
+                    ]),
                 TextColumn::make('total_produk')
                     ->sortable()
                     ->searchable(),

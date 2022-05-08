@@ -13,6 +13,17 @@ class ProfitDashboard extends Page
     protected static ?string $navigationGroup = 'Pencatatan Keuangan';
     protected static ?string $slug = 'profit-dashboard';
 
+
+    public function mount(): void
+    {
+        abort_unless(auth()->user()->isOwner(), 403);
+    }
+
+    protected static function shouldRegisterNavigation(): bool
+    {
+        return auth()->user()->isOwner();
+    }
+
     protected function getHeaderWidgets(): array
     {
         return [

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -24,7 +25,15 @@ class DatabaseSeeder extends Seeder
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'id_kecamatan' => 1,
             'id_kabupaten' => 2,
-            'role' => 'RESELLER'
+            'role' => 'OWNER'
+        ]);
+
+        Product::create([
+            'nama_produk' => 'testing',
+            'harga' => 1000,
+            'deskripsi' => 'sdafdsagda dasd',
+            'stok' => 20,
+            'foto_produk' => 'tstse'
         ]);
     }
 }

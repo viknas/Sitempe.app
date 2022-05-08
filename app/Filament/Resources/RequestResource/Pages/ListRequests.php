@@ -12,6 +12,12 @@ class ListRequests extends ListRecords
 
     protected function getTableQuery(): Builder
     {
-        return parent::getTableQuery()->where('status', '!=', null);
+        if (auth()->user()->isOwner()) {
+            return parent::getTableQuery()->where('status', '!=', null);
+        } else {
+            return parent::getTableQuery()
+            ->where('id_user', '=', auth()->user()->id)
+            ->where('status', '!=', null);
+        }
     }
 }
