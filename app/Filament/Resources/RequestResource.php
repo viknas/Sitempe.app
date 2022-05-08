@@ -3,7 +3,9 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\RequestResource\Pages;
+use App\Models\Product;
 use App\Models\Request;
+use Closure;
 use Filament\Forms\Components\BelongsToSelect;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\DatePicker;
@@ -47,12 +49,16 @@ class RequestResource extends Resource
                 ]),
                 HasManyRepeater::make('details')
                     ->relationship('details')
-                    ->label('Detail')
+                    ->createItemButtonLabel('Tambah Produk')
                     ->schema([
                         Grid::make()->schema([
                             BelongsToSelect::make('id_produk')
                                 ->label('Produk')
-                                ->searchable()
+                                ->reactive()
+                                ->afterStateUpdated(function (Closure $set, $state) {
+                                    $product = Product::find($state);
+                                    $set('harga', $product['harga']);
+                                })
                                 ->relationship('product', 'nama_produk'),
                             TextInput::make('jumlah_produk')
                                 ->numeric()
@@ -86,7 +92,7 @@ class RequestResource extends Resource
                     ->sortable()
                     ->searchable()
                     ->label('Reseller'),
-                TextColumn::make('jumlah_produk')
+                TextColumn::make('total_produk')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('total_harga')

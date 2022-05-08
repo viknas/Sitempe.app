@@ -17,6 +17,7 @@ class CreateRequest extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['id_user'] = auth()->id();
+        $data['tipe'] = 'DIPESAN';
 
         return $data;
     }
