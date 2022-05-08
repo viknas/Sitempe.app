@@ -19,6 +19,7 @@ class BestProductChart extends BarChartWidget
                 [
                     'label' => 'Terjual',
                     'data' => $data->map(fn ($value) => $value->total_terjual),
+                    'backgroundColor' => 'rgba(245, 158, 11, 0.5)'
                 ],
             ],
             'labels' => $data->map(fn ($value) => $value->nama_produk),
