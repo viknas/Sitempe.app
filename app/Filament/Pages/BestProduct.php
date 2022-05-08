@@ -9,6 +9,7 @@ class BestProduct extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     protected static ?string $title = 'Produk terlaris';
+    protected static ?int $navigationSort = 2;
     protected static string $view = 'filament.pages.best-product';
     protected static ?string $slug = 'best-product';
 
