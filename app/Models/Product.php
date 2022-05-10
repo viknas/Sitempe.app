@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
@@ -24,7 +24,11 @@ class Product extends Model
 
     public function getTotalTerjualAttribute()
     {
+
+        $startOfMonth = Carbon::now()->startOfMonth()->format('Y-m-d');
+        $endOfMonth = Carbon::now()->endOfMonth()->format('Y-m-d');
         return $this->sale
+            ->whereBetween('tanggal', [$startOfMonth, $endOfMonth])
             ->sum('total_produk');
     }
 }
