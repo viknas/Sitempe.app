@@ -56,14 +56,30 @@ class RequestResource extends Resource
                             BelongsToSelect::make('id_produk')
                                 ->label('Produk')
                                 ->reactive()
-                                ->afterStateUpdated(function (Closure $set, $state) {
-                                    $product = Product::find($state);
-                                    $set('harga', $product['harga']);
+                                ->afterStateHydrated(function (Closure $set, Closure $get, $state) {
+                                    if ($get('id_produk') != null) {
+                                        $product = Product::find($state);
+                                        $set('stock', $product['stok']);
+                                    }
+                                })
+                                ->afterStateUpdated(function (Closure $set, Closure $get, $state) {
+                                    if ($get('id_produk') != null) {
+                                        $product = Product::find($state);
+                                        $set('harga', $product['harga']);
+                                        $set('stock', $product['stok']);
+                                    }
                                 })
                                 ->relationship('product', 'nama_produk'),
                             TextInput::make('jumlah_produk')
                                 ->numeric()
-                                ->required(),
+                                ->required()
+                                ->lt('stock')
+                                ->reactive()
+                                ->minValue(1)
+                                ->default(1),
+                            TextInput::make('stock')
+                                ->hidden()
+                                ->reactive(),
                             TextInput::make('harga')
                                 ->numeric()
                                 ->required()

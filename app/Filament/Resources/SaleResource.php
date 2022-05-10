@@ -51,15 +51,30 @@ class SaleResource extends Resource
                                 ->label('Produk')
                                 ->relationship('product', 'nama_produk')
                                 ->reactive()
-                                ->afterStateUpdated(function (Closure $set, $state) {
-                                    $product = Product::find($state);
-                                    $set('harga', $product['harga']);
+                                ->required()
+                                ->afterStateHydrated(function (Closure $set, Closure $get, $state) {
+                                    if ($get('id_produk') != null) {
+                                        $product = Product::find($state);
+                                        $set('stock', $product['stok']);
+                                    }
+                                })
+                                ->afterStateUpdated(function (Closure $set, Closure $get, $state) {
+                                    if ($get('id_produk') != null) {
+                                        $product = Product::find($state);
+                                        $set('harga', $product['harga']);
+                                        $set('stock', $product['stok']);
+                                    }
                                 }),
                             TextInput::make('jumlah_produk')
                                 ->numeric()
                                 ->required()
+                                ->lt('stock')
                                 ->reactive()
-                                ->default(0),
+                                ->minValue(1)
+                                ->default(1),
+                            TextInput::make('stock')
+                                ->hidden()
+                                ->reactive(),
                             TextInput::make('harga')
                                 ->numeric()
                                 ->required()
@@ -80,6 +95,7 @@ class SaleResource extends Resource
             'lg' => null,
         ]);
     }
+
 
     public static function table(Table $table): Table
     {

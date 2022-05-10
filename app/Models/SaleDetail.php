@@ -24,4 +24,20 @@ class SaleDetail extends Model
     {
         return $this->belongsTo(Sale::class, 'id_penjualan');
     }
+
+    public static function boot()
+    {
+        parent::boot();
+        static::saved(function (SaleDetail $item) {
+            if ($item->wasRecentlyCreated) {
+                $product = $item->product;
+                $product->stok = $product->stok - $item->jumlah_produk;
+                $product->save();
+            } else {
+                $product = $item->product;
+                $product->stok = ($product->stok + $item->getOriginal('jumlah_produk')) - $item->jumlah_produk;
+                $product->save();
+            }
+        });
+    }
 }
