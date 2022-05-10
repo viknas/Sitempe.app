@@ -24,7 +24,7 @@ use Livewire\Component;
 class RequestResource extends Resource
 {
     protected static ?string $model = Request::class;
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
     protected static ?string $label = 'Permintaan produk';
     protected static ?string $pluralLabel = 'Permintaan produk';
     protected static ?string $navigationGroup = 'Pencatatan Keuangan';

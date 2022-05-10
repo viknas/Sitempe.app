@@ -23,7 +23,7 @@ use Filament\Tables\Columns\TextColumn;
 class SaleResource extends Resource
 {
     protected static ?string $model = Sale::class;
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-truck';
     protected static ?string $label = 'Penjualan produk';
     protected static ?string $pluralLabel = 'Penjualan Produk';
     protected static ?string $navigationGroup = 'Pencatatan Keuangan';

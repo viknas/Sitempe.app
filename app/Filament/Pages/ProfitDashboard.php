@@ -7,7 +7,7 @@ use Filament\Pages\Page;
 
 class ProfitDashboard extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static ?string $navigationIcon = 'heroicon-o-document-report';
     protected static ?string $title = 'Grafik Keuntungan';
     protected static string $view = 'filament.pages.profit-dashboard';
     protected static ?string $navigationGroup = 'Pencatatan Keuangan';
