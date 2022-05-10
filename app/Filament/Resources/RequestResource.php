@@ -56,30 +56,27 @@ class RequestResource extends Resource
                             BelongsToSelect::make('id_produk')
                                 ->label('Produk')
                                 ->reactive()
-                                ->afterStateHydrated(function (Closure $set, Closure $get, $state) {
-                                    if ($get('id_produk') != null) {
-                                        $product = Product::find($state);
-                                        $set('stock', $product['stok']);
-                                    }
-                                })
                                 ->afterStateUpdated(function (Closure $set, Closure $get, $state) {
                                     if ($get('id_produk') != null) {
                                         $product = Product::find($state);
                                         $set('harga', $product['harga']);
-                                        $set('stock', $product['stok']);
                                     }
                                 })
                                 ->relationship('product', 'nama_produk'),
                             TextInput::make('jumlah_produk')
                                 ->numeric()
                                 ->required()
-                                ->lt('stock')
-                                ->reactive()
+                                ->rules([function (Closure $get) {
+                                    return function (string $attribute, $value, Closure $fail) use ($get) {
+                                        $product_id = $get('id_produk');
+                                        $stock = Product::find($product_id)->stok;
+                                        if ($value > $stock) {
+                                            $fail('Jumlah produk melebihi stok');
+                                        }
+                                    };
+                                }])
                                 ->minValue(1)
                                 ->default(1),
-                            TextInput::make('stock')
-                                ->hidden()
-                                ->reactive(),
                             TextInput::make('harga')
                                 ->numeric()
                                 ->required()
