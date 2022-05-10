@@ -26,12 +26,14 @@ class RequestDetail extends Model
     public static function boot()
     {
         parent::boot();
+        static::created(function (RequestDetail $item) {
+            $product = $item->product;
+            $product->stok = $product->stok - $item->jumlah_produk;
+            $product->save();
+        });
+
         static::saved(function (RequestDetail $item) {
-            if ($item->wasRecentlyCreated) {
-                $product = $item->product;
-                $product->stok = $product->stok - $item->jumlah_produk;
-                $product->save();
-            } else {
+            if (!$item->wasRecentlyCreated) {
                 $product = $item->product;
                 $product->stok = ($product->stok + $item->getOriginal('jumlah_produk')) - $item->jumlah_produk;
                 $product->save();

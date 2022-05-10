@@ -28,12 +28,15 @@ class SaleDetail extends Model
     public static function boot()
     {
         parent::boot();
+
+        static::created(function (SaleDetail $item) {
+            $product = $item->product;
+            $product->stok = $product->stok - $item->jumlah_produk;
+            $product->save();
+        });
+
         static::saved(function (SaleDetail $item) {
-            if ($item->wasRecentlyCreated) {
-                $product = $item->product;
-                $product->stok = $product->stok - $item->jumlah_produk;
-                $product->save();
-            } else {
+            if (!$item->wasRecentlyCreated) {
                 $product = $item->product;
                 $product->stok = ($product->stok + $item->getOriginal('jumlah_produk')) - $item->jumlah_produk;
                 $product->save();

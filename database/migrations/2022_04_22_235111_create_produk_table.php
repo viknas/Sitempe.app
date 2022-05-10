@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('nama_produk', 40);
             $table->unsignedInteger('harga');
             $table->text('deskripsi')->nullable();
-            $table->unsignedInteger('stok');
+            $table->bigInteger('stok');
             $table->string('foto_produk');
             $table->softDeletes();
             $table->timestamps();
