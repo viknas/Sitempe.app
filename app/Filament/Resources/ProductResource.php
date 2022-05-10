@@ -86,9 +86,11 @@ class ProductResource extends Resource
                 TextColumn::make('created_at')
                     ->sortable()
                     ->label('Dibuat')
+                    ->hidden(fn () => auth()->user()->isReseller())
                     ->dateTime(),
                 TextColumn::make('updated_at')
                     ->sortable()
+                    ->hidden(fn () => auth()->user()->isReseller())
                     ->label('Terakhir diubah')
                     ->dateTime(),
             ])
