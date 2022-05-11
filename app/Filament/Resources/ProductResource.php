@@ -70,7 +70,8 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 ImageColumn::make('foto_produk')
-                    ->height(200),
+                    ->height('50%')
+                    ->width('100%'),
                 TextColumn::make('nama_produk')
                     ->sortable()
                     ->searchable(),
