@@ -18,11 +18,11 @@ class BestProductChart extends BarChartWidget
             'datasets' => [
                 [
                     'label' => 'Terjual',
-                    'data' => $data->map(fn ($value) => $value->total_terjual),
+                    'data' => $data->map(fn (Product $product) => $product->soldPerMonth()),
                     'backgroundColor' => 'rgba(245, 158, 11, 0.5)'
                 ],
             ],
-            'labels' => $data->map(fn ($value) => $value->nama_produk),
+            'labels' => $data->map(fn (Product $product) => $product->nama_produk),
         ];
     }
 }

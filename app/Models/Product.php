@@ -13,7 +13,6 @@ class Product extends Model
 
     protected $table = 'produk';
     protected $guarded = ['id'];
-    protected $appends = ['total_terjual'];
 
     public function sale()
     {
@@ -22,7 +21,7 @@ class Product extends Model
             ->orWhere('status', '=', 'SELESAI');
     }
 
-    public function getTotalTerjualAttribute()
+    public function soldPerMonth()
     {
 
         $startOfMonth = Carbon::now()->startOfMonth()->format('Y-m-d');
