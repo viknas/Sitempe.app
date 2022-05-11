@@ -17,7 +17,7 @@ class Product extends Model
 
     public function sale()
     {
-        return $this->hasManyThrough(Sale::class, SaleDetail::class, 'id_produk', 'id')
+        return $this->hasManyThrough(Sale::class, SaleDetail::class, 'id_produk', 'id', 'id', 'id_penjualan')
             ->where('tipe', '=', 'LANGSUNG')
             ->orWhere('status', '=', 'SELESAI');
     }
