@@ -109,7 +109,7 @@ class Profile extends BaseProfile implements HasForms
                         ->required(),
                     TextInput::make('alamat')
                         ->label('Alamat'),
-                    TextInput::make('no_hp')
+                    TextInput::make('nomor_hp')
                         ->label('No HP'),
                     Select::make('id_kecamatan')
                         ->label('Kecamatan')
