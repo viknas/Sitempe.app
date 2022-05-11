@@ -98,11 +98,8 @@ class SaleResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('total_produk')
-                    ->sortable(),
+                TextColumn::make('total_produk'),
                 TextColumn::make('total_harga')
-                    ->sortable()
-                    ->searchable()
                     ->money('idr', true),
                 TextColumn::make('tanggal')
                     ->sortable()

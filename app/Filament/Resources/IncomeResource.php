@@ -36,10 +36,8 @@ class IncomeResource extends Resource
                 TextColumn::make('tanggal')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('total_produk')
-                    ->sortable(),
+                TextColumn::make('total_produk'),
                 TextColumn::make('total_harga')
-                    ->sortable()
                     ->label('Pendapatan')
                     ->money('idr', true),
                 TextColumn::make('created_at')
