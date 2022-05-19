@@ -19,6 +19,7 @@ use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Livewire\Component;
 
 class RequestResource extends Resource
@@ -137,7 +138,10 @@ class RequestResource extends Resource
                     ->dateTime(),
             ])
             ->filters([
-                //
+                SelectFilter::make('status')->options([
+                    'MENUNGGU KONFIRMASI' => 'Menunggu Konfirmasi',
+                    'SELESAI' => 'Selesai'
+                ])
             ]);
     }
 
