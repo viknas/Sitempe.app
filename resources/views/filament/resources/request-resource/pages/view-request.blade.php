@@ -1,5 +1,5 @@
 <x-filament::page>
-  <div class="shadow bg-white dark:bg-gray-800 p-6 rounded">
+  <div class="border border-gray-300 shadow-sm bg-white rounded-xl dark:bg-gray-800 p-6">
 
     <div class="md:flex">
       <div class="md:mr-9 mb-3">
