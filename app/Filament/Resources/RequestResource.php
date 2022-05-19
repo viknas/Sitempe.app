@@ -156,6 +156,7 @@ class RequestResource extends Resource
             'index' => Pages\ListRequests::route('/'),
             'create' => Pages\CreateRequest::route('/create'),
             'edit' => Pages\EditRequest::route('/{record}/edit'),
+            'view' => Pages\ViewRequest::route('/{record}'),
         ];
     }
 
