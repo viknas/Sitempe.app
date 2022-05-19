@@ -38,6 +38,7 @@ class RequestResource extends Resource
                     DatePicker::make('tanggal')
                         ->default(now())
                         ->maxDate(now())
+                        ->disabled(self::authorizeAction())
                         ->required(),
                     Select::make('status')
                         ->options([
@@ -46,12 +47,15 @@ class RequestResource extends Resource
                         ])
                         ->required()
                         ->default('MENUNGGU KONFIRMASI')
-                        ->disabled(fn (Component $livewire): bool => $livewire instanceof Pages\CreateRequest)
+                        ->disabled(fn (Closure $get): bool => $get('status') == 'SELESAI')
                         ->hidden(fn (): bool => auth()->user()->isReseller()),
                 ]),
                 HasManyRepeater::make('details')
+                    ->disabled(self::authorizeAction())
                     ->relationship('details')
                     ->createItemButtonLabel('Tambah Produk')
+                    ->disableItemCreation(self::authorizeAction())
+                    ->disableItemDeletion(self::authorizeAction())
                     ->schema([
                         Grid::make()->schema([
                             BelongsToSelect::make('id_produk')
@@ -117,12 +121,8 @@ class RequestResource extends Resource
                         'warning' => 'MENUNGGU KONFIRMASI',
                         'success' => 'SELESAI',
                     ]),
-                TextColumn::make('total_produk')
-                    ->sortable()
-                    ->searchable(),
+                TextColumn::make('total_produk'),
                 TextColumn::make('total_harga')
-                    ->sortable()
-                    ->searchable()
                     ->money('idr', true),
                 TextColumn::make('tanggal')
                     ->sortable()
@@ -157,5 +157,19 @@ class RequestResource extends Resource
             'create' => Pages\CreateRequest::route('/create'),
             'edit' => Pages\EditRequest::route('/{record}/edit'),
         ];
+    }
+
+    public static function authorizeAction()
+    {
+        return function (Component $livewire, Closure $get): bool {
+            if (auth()->user()->isReseller()) {
+                if ($livewire instanceof Pages\EditRequest) {
+                    return $get('status') == 'SELESAI';
+                }
+                return false;
+            } else {
+                return true;
+            }
+        };
     }
 }

@@ -25,7 +25,11 @@ class RequestPolicy
 
     public function create(User $user)
     {
-        return true;
+        if ($user->isReseller()) {
+            return true;
+        }
+
+        return false;
     }
 
     public function update(User $user, Request $request)
