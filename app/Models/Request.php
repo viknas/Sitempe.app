@@ -33,4 +33,20 @@ class Request extends Model
     {
         return $this->details()->sum(DB::raw('detail_penjualan.harga * detail_penjualan.jumlah_produk'));
     }
+
+    public static function boot()
+    {
+        parent::boot();
+        static::saved(function (Request $request) {
+            if (!$request->wasRecentlyCreated) {
+                if ($request->status = 'DIBATALKAN') {
+                    foreach ($request->details as $item) {
+                        $product = $item->product;
+                        $product->stok += $item->jumlah_produk;
+                        $product->save();
+                    }
+                }
+            }
+        });
+    }
 }

@@ -42,12 +42,13 @@ class RequestResource extends Resource
                         ->required(),
                     Select::make('status')
                         ->options([
+                            'DIBATALKAN' => 'Dibatalkan',
                             'MENUNGGU KONFIRMASI' => 'Menunggu Konfirmasi',
                             'SELESAI' => 'Selesai',
                         ])
                         ->required()
                         ->default('MENUNGGU KONFIRMASI')
-                        ->disabled(fn (Closure $get): bool => $get('status') == 'SELESAI')
+                        ->disabled(fn (Closure $get): bool => $get('status') == 'SELESAI' || $get('status') == 'DIBATALKAN')
                         ->hidden(fn (): bool => auth()->user()->isReseller()),
                 ]),
                 HasManyRepeater::make('details')
@@ -114,10 +115,12 @@ class RequestResource extends Resource
                     ->label('Reseller'),
                 BadgeColumn::make('status')
                     ->enum([
+                        'DIBATALKAN' => 'Dibatalkan',
                         'MENUNGGU KONFIRMASI' => 'Menunggu Konfirmasi',
                         'SELESAI' => 'Selesai',
                     ])
                     ->colors([
+                        'danger' => 'DIBATALKAN',
                         'warning' => 'MENUNGGU KONFIRMASI',
                         'success' => 'SELESAI',
                     ]),

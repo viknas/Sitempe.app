@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedInteger('jumlah_produk')->default(0);
             $table->unsignedInteger('total_harga')->default(0);
             $table->enum('tipe', ['LANGSUNG', 'DIPESAN']);
-            $table->enum('status', ['MENUNGGU KONFIRMASI', 'SELESAI', null])->default(null)->nullable();
+            $table->enum('status', ['MENUNGGU KONFIRMASI', 'SELESAI', 'DIBATALKAN',null])->default(null)->nullable();
             $table->timestamps();
         });
     }
