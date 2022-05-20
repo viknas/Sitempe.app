@@ -26,7 +26,7 @@ class EditRequest extends EditRecord
                 ->modalHeading('Batalkan pesanan')
                 ->modalSubheading('Apakah anda yakin membatalkan pesanan ini?')
                 ->modalButton('Ya')
-                ->hidden(fn() : bool => $this->record->status != 'MENUNGGU KONFIRMASI')
+                ->hidden(fn() : bool => $this->record->status != 'MENUNGGU KONFIRMASI' || auth()->user()->isOwner())
                 ->color('danger'),
         ]);
     }

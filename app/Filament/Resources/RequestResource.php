@@ -168,7 +168,7 @@ class RequestResource extends Resource
         return function (Component $livewire, Closure $get): bool {
             if (auth()->user()->isReseller()) {
                 if ($livewire instanceof Pages\EditRequest) {
-                    return $get('status') == 'SELESAI';
+                    return $get('status') == 'SELESAI' || $get('status') == 'DIBATALKAN';
                 }
                 return false;
             } else {
