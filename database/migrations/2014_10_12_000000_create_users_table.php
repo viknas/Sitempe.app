@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('password');
             $table->text('alamat')->nullable();
             $table->string('foto_profil')->nullable();
+            $table->char('regency_id', 4);
+            $table->char('district_id', 7);
             $table->enum('role', ['RESELLER', 'OWNER'])->default('RESELLER');
             $table->rememberToken();
             $table->softDeletes();

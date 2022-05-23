@@ -15,16 +15,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\District::factory(10)->create();
-        \App\Models\Regency::factory(10)->create();
+        $this->call(IndoRegionProvinceSeeder::class);
+        $this->call(IndoRegionRegencySeeder::class);
+        $this->call(IndoRegionDistrictSeeder::class);
         \App\Models\User::factory(10)->create();
 
         User::create([
             'nama' => 'Super Admin',
             'email' => 'admin@mail.com',
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'id_kecamatan' => 1,
-            'id_kabupaten' => 2,
+            'regency_id' => 3511,
+            'district_id' => 3511050,
             'role' => 'OWNER'
         ]);
 
@@ -35,5 +36,6 @@ class DatabaseSeeder extends Seeder
             'stok' => 20,
             'foto_produk' => 'tstse'
         ]);
+
     }
 }

@@ -52,14 +52,14 @@ class UserResource extends Resource
                         TextInput::make('alamat'),
                         TextInput::make('nomor_hp')
                             ->tel(),
-                        BelongsToSelect::make('id_kecamatan')
-                            ->label('Kecamatan')
-                            ->relationship('district', 'kecamatan')
+                        BelongsToSelect::make('regency_id')
+                            ->label('Kabupaten')
+                            ->relationship('regency', 'name')
                             ->searchable()
                             ->required(),
-                        BelongsToSelect::make('id_kabupaten')
-                            ->label('Kabupaten')
-                            ->relationship('regency', 'kabupaten')
+                        BelongsToSelect::make('district_id')
+                            ->label('Kecamatan')
+                            ->relationship('district', 'name')
                             ->searchable()
                             ->required(),
                         TextInput::make('password')
@@ -130,14 +130,14 @@ class UserResource extends Resource
                     ->searchable(),
                 ImageColumn::make('foto_profil')
                     ->rounded(),
-                TextColumn::make('district.kecamatan')
-                    ->sortable()
-                    ->searchable()
-                    ->label('Kecamatan'),
-                TextColumn::make('regency.kabupaten')
+                TextColumn::make('regency.name')
                     ->sortable()
                     ->searchable()
                     ->label('Kabupaten'),
+                TextColumn::make('district.name')
+                    ->sortable()
+                    ->searchable()
+                    ->label('Kecamatan'),
             ])
             ->filters([
                 //

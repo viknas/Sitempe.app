@@ -21,18 +21,14 @@ class ViewUser extends Page implements HasForms
     protected static ?string $title = 'Informasi Reseller';
     protected static string $resource = UserResource::class;
     protected static string $view = 'filament.resources.user-resource.pages.view-user';
+    public User $user;
 
     public function mount(User $record)
     {
-        $user = $record;
+        $this->user = $record;
+
         $this->form->fill([
-            'nama' => $user->nama,
-            'email' => $user->email,
-            'nomor_hp' => $user->nomor_hp,
-            'alamat' => $user->alamat,
-            'kecamatan' => $user->district->kecamatan,
-            'kabupaten' => $user->regency->kabupaten,
-            'foto_profil' => $user->foto_profil
+            'foto_profil' => $this->user->foto_profil
         ]);
     }
 
@@ -50,12 +46,12 @@ class ViewUser extends Page implements HasForms
                         ->disabled()
                         ->columnSpan(2)
                         ->imagePreviewHeight('300')->directory('accountImages'),
-                    TextInput::make('nama')->disabled(),
-                    TextInput::make('email')->disabled(),
-                    TextInput::make('alamat')->disabled(),
-                    TextInput::make('nomor_hp')->disabled(),
-                    TextInput::make('kecamatan')->disabled(),
-                    TextInput::make('kabupaten')->disabled(),
+                    Placeholder::make('Nama')->content($this->user->nama),
+                    Placeholder::make('Email')->content($this->user->email),
+                    Placeholder::make('Alamat')->content($this->user->alamat ?? '-'),
+                    Placeholder::make('Nomor HP')->label('Nomor HP')->content($this->user->nomor_hp ?? '-'),
+                    Placeholder::make('Kabupaten')->content($this->user->regency->name),
+                    Placeholder::make('Kecamatan')->content($this->user->district->name),
                 ]),
 
             ])->columnSpan(2),

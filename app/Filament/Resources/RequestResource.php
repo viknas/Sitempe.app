@@ -42,7 +42,6 @@ class RequestResource extends Resource
                         ->required(),
                     Select::make('status')
                         ->options([
-                            'DIBATALKAN' => 'Dibatalkan',
                             'MENUNGGU KONFIRMASI' => 'Menunggu Konfirmasi',
                             'SELESAI' => 'Selesai',
                         ])

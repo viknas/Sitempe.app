@@ -1,15 +1,26 @@
 <x-filament::page>
   <div class="border border-gray-300 shadow-sm bg-white rounded-xl dark:bg-gray-800 p-6">
 
-    <div class="md:flex">
-      <div class="md:mr-9 mb-3">
-        <p class="text-gray-500 dark:text-gray-300 font-medium">Reseller</p>
-        <span class="text-gray-700 dark:text-gray-300">{{ $request->user->nama }}</span>
-      </div>
+    <div class="md:flex space-y-4 md:space-y-0">
       <div>
-        <p class="text-gray-500 dark:text-gray-300 font-medium">Tanggal</p>
-        <span class="text-gray-700 dark:text-gray-300">{{ $request->tanggal }}</span>
+        <p class="text-gray-500 dark:text-gray-300 font-medium">Reseller</p>
+        <p class="text-gray-700 dark:text-gray-300">{{ $request->user->nama }}</p>
+        <p class="text-gray-700 dark:text-gray-300">{{ $request->user->district->name }}</p>
       </div>
+      <div class="md:ml-auto">
+        <p class="text-gray-500 dark:text-gray-300 font-medium">Tanggal</p>
+        <p class="text-gray-700 dark:text-gray-300">{{ $request->tanggal }}</p>
+      </div>
+
+      @if ($request->status == 'DIBATALKAN' || $request->status == 'SELESAI')
+      <div>
+        <p class="text-gray-500 dark:text-gray-300 font-medium">
+            {{$request->status == 'DIBATALKAN' ? 'Tanggal dibatalkan' : 'Tanggal diterima'}}
+        </p>
+        <p class="text-gray-700 dark:text-gray-300">{{ $request->updated_at->format('Y-m-d') }}</p>
+      </div>
+      @endif
+
     </div>
 
 
@@ -41,7 +52,7 @@
 
       <div class="text-right mt-10">
         <p class="text-gray-500 dark:text-gray-300">Total harga</p>
-        <p class="text-4xl">
+        <p class="text-2xl md:text-4xl">
           <x-money amount="{{ $request->total_harga }}" currency="IDR" convert />
         </p>
       </div>

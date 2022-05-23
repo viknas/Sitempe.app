@@ -21,8 +21,8 @@ class UserFactory extends Factory
             'nama' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'id_kecamatan' => $this->faker->numberBetween(1, 9),
-            'id_kabupaten' => $this->faker->numberBetween(1, 9),
+            'regency_id' => 3511,
+            'district_id' => 3511050,
         ];
     }
 

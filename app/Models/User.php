@@ -78,11 +78,11 @@ class User extends Authenticatable implements HasName, HasAvatar, FilamentUser
 
     public function district()
     {
-        return $this->belongsTo(District::class, 'id_kecamatan');
+        return $this->belongsTo(District::class, 'district_id');
     }
 
     public function regency()
     {
-        return $this->belongsTo(Regency::class, 'id_kabupaten');
+        return $this->belongsTo(Regency::class, 'regency_id');
     }
 }

@@ -4,6 +4,8 @@ namespace App\Filament\Pages;
 
 use App\Models\District;
 use App\Models\Regency;
+use App\Models\User;
+use Closure;
 use Filament\Forms\Components\BelongsToSelect;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
@@ -12,6 +14,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Hash;
 use RyanChandler\FilamentProfile\Pages\Profile as BaseProfile;
 
@@ -33,8 +36,6 @@ class Profile extends BaseProfile implements HasForms
     public $email;
     public $nomor_hp;
     public $alamat;
-    public $id_kecamatan;
-    public $id_kabupaten;
     public $foto_profil;
 
 
@@ -49,10 +50,13 @@ class Profile extends BaseProfile implements HasForms
             'email' => auth()->user()->email,
             'nomor_hp' => auth()->user()->nomor_hp,
             'alamat' => auth()->user()->alamat,
-            'id_kecamatan' => auth()->user()->id_kecamatan,
-            'id_kabupaten' => auth()->user()->id_kabupaten,
             'foto_profil' => auth()->user()->foto_profil
         ]);
+    }
+
+    protected function getFormModel(): User
+    {
+        return auth()->user();
     }
 
     public function submit()
@@ -111,14 +115,26 @@ class Profile extends BaseProfile implements HasForms
                         ->label('Alamat'),
                     TextInput::make('nomor_hp')
                         ->label('No HP'),
-                    Select::make('id_kecamatan')
-                        ->label('Kecamatan')
-                        ->options(District::all()->pluck('kecamatan', 'id'))
-                        ->searchable(),
-                    Select::make('id_kabupaten')
+                    BelongsToSelect::make('regency_id')
+                        ->relationship(
+                            'regency',
+                            'name',
+                            fn (Builder $query) =>
+                            $query->where('province_id', '=', 35)
+                        )
                         ->label('Kabupaten')
-                        ->options(Regency::all()->pluck('kabupaten', 'id'))
-                        ->searchable(),
+                        ->required()
+                        ->reactive(),
+                    BelongsToSelect::make('district_id')
+                        ->relationship(
+                            'district',
+                            'name',
+                            fn (Builder $query, Closure $get) =>
+                            $query->where('regency_id', '=', $get('regency_id'))
+                        )
+                        ->label('Kecamatan')
+                        ->required()
+                        ->disabled(fn (Closure $get) => $get('regency_id') == null)
                 ]),
             Section::make('Ubah Kata Sandi')
                 ->columns(2)
