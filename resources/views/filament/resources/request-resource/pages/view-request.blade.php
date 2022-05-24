@@ -4,21 +4,25 @@
     <div class="md:flex space-y-4 md:space-y-0">
       <div>
         <p class="text-gray-500 dark:text-gray-300 font-medium">Reseller</p>
-        <p class="text-gray-700 dark:text-gray-300">{{ $request->user->nama }}</p>
-        <p class="text-gray-700 dark:text-gray-300">{{ $request->user->district->name }}</p>
+        <p class="text-gray-700 text-sm dark:text-gray-300">{{ $request->user->nama }}</p>
+        <p class="text-gray-700 text-sm dark:text-gray-300">{{ ucwords(strtolower($request->user->regency->name)) }}
+        </p>
+        <p class="text-gray-700 text-sm dark:text-gray-300">{{ ucwords(strtolower($request->user->district->name)) }}
+        </p>
+        <p class="text-gray-700 text-sm dark:text-gray-300">{{ $request->user->alamat ?? '-' }}</p>
       </div>
-      <div class="md:ml-auto">
+      <div class="md:ml-auto md:text-right">
         <p class="text-gray-500 dark:text-gray-300 font-medium">Tanggal</p>
-        <p class="text-gray-700 dark:text-gray-300">{{ $request->tanggal }}</p>
+        <p class="text-gray-700 text-sm dark:text-gray-300">{{ $request->tanggal }}</p>
       </div>
 
       @if ($request->status == 'DIBATALKAN' || $request->status == 'SELESAI')
-      <div>
-        <p class="text-gray-500 dark:text-gray-300 font-medium">
-            {{$request->status == 'DIBATALKAN' ? 'Tanggal dibatalkan' : 'Tanggal diterima'}}
-        </p>
-        <p class="text-gray-700 dark:text-gray-300">{{ $request->updated_at->format('Y-m-d') }}</p>
-      </div>
+        <div class="md:pl-6 md:text-right">
+          <p class="text-gray-500 dark:text-gray-300 font-medium">
+            {{ $request->status == 'DIBATALKAN' ? 'Tanggal dibatalkan' : 'Tanggal diterima' }}
+          </p>
+          <p class="text-gray-700 text-sm dark:text-gray-300">{{ $request->updated_at->format('Y-m-d') }}</p>
+        </div>
       @endif
 
     </div>
@@ -56,6 +60,13 @@
           <x-money amount="{{ $request->total_harga }}" currency="IDR" convert />
         </p>
       </div>
+
+      @if (auth()->user()->isReseller())
+        <x-filament::button class="mt-4" type="button" target="_blank" color="secondary" tag="a"
+          :href="'https://wa.me/082230634412'">
+          Hubungi Pemilik
+        </x-filament::button>
+      @endif
     </div>
 
   </div>

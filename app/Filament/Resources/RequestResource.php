@@ -38,7 +38,7 @@ class RequestResource extends Resource
                     DatePicker::make('tanggal')
                         ->default(now())
                         ->maxDate(now())
-                        ->disabled(self::authorizeAction())
+                        ->disabled(true)
                         ->required(),
                     Select::make('status')
                         ->options([
