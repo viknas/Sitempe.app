@@ -63,7 +63,7 @@
 
       @if (auth()->user()->isReseller())
         <x-filament::button class="mt-4" type="button" target="_blank" color="secondary" tag="a"
-          :href="'https://wa.me/082230634412'">
+          :href="'https://wa.me/082230734988?text=puntengopud'">
           Hubungi Pemilik
         </x-filament::button>
       @endif
