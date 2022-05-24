@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
+use Closure;
 use Filament\Forms;
 use Filament\Forms\Components\BelongsToSelect;
 use Filament\Forms\Components\Card;
@@ -19,6 +20,8 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Livewire\Component;
 
 class UserResource extends Resource
@@ -53,15 +56,27 @@ class UserResource extends Resource
                         TextInput::make('nomor_hp')
                             ->tel(),
                         BelongsToSelect::make('regency_id')
+                            ->relationship(
+                                'regency',
+                                'name',
+                                fn (Builder $query) =>
+                                $query->where('province_id', '=', 35)
+                            )
                             ->label('Kabupaten')
-                            ->relationship('regency', 'name')
-                            ->searchable()
-                            ->required(),
+                            ->required()
+                            ->getOptionLabelFromRecordUsing(fn (Model $record) => ucwords(strtolower($record->name)))
+                            ->reactive(),
                         BelongsToSelect::make('district_id')
+                            ->relationship(
+                                'district',
+                                'name',
+                                fn (Builder $query, Closure $get) =>
+                                $query->where('regency_id', '=', $get('regency_id'))
+                            )
                             ->label('Kecamatan')
-                            ->relationship('district', 'name')
-                            ->searchable()
-                            ->required(),
+                            ->getOptionLabelFromRecordUsing(fn (Model $record) => ucwords(strtolower($record->name)))
+                            ->required()
+                            ->disabled(fn (Closure $get) => $get('regency_id') == null),
                         TextInput::make('password')
                             ->label('Password')
                             ->password()
@@ -74,32 +89,6 @@ class UserResource extends Resource
                                 'required_with:password',
                             ])->columnSpan(2)
                     ]),
-                    Section::make('Ubah Kata Sandi')
-                        ->columns(2)
-                        ->schema([
-                            TextInput::make('current_password')
-                                ->label('Password Sekarang')
-                                ->password()
-                                ->rules(['required_with:password'])
-                                ->currentPassword()
-                                ->autocomplete('off')
-                                ->columnSpan(1),
-                            Grid::make()
-                                ->schema([
-                                    TextInput::make('password')
-                                        ->label('Password Baru')
-                                        ->password()
-                                        ->rules(['confirmed'])
-                                        ->autocomplete('new-password'),
-                                    TextInput::make('password_confirmation')
-                                        ->label('Verifikasi Password')
-                                        ->password()
-                                        ->rules([
-                                            'required_with:password',
-                                        ])
-                                        ->autocomplete('new-password'),
-                                ]),
-                        ]),
                 ])->columnSpan(2),
                 Card::make([
                     Placeholder::make('created_at')
@@ -132,9 +121,11 @@ class UserResource extends Resource
                     ->rounded(),
                 TextColumn::make('regency.name')
                     ->sortable()
+                    ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
                     ->searchable()
                     ->label('Kabupaten'),
                 TextColumn::make('district.name')
+                    ->formatStateUsing(fn (string $state): string => ucwords(strtolower($state)))
                     ->sortable()
                     ->searchable()
                     ->label('Kecamatan'),

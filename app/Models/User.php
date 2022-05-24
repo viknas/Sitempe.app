@@ -26,8 +26,8 @@ class User extends Authenticatable implements HasName, HasAvatar, FilamentUser
         'alamat',
         'nomor_hp',
         'foto_profil',
-        'id_kecamatan',
-        'id_kabupaten',
+        'regency_id',
+        'district_id',
         'role'
     ];
 

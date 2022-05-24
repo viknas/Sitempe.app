@@ -15,6 +15,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use RyanChandler\FilamentProfile\Pages\Profile as BaseProfile;
 
@@ -123,6 +124,7 @@ class Profile extends BaseProfile implements HasForms
                             $query->where('province_id', '=', 35)
                         )
                         ->label('Kabupaten')
+                        ->getOptionLabelFromRecordUsing(fn (Model $record) => ucwords(strtolower($record->name)))
                         ->required()
                         ->reactive(),
                     BelongsToSelect::make('district_id')
@@ -134,6 +136,7 @@ class Profile extends BaseProfile implements HasForms
                         )
                         ->label('Kecamatan')
                         ->required()
+                        ->getOptionLabelFromRecordUsing(fn (Model $record) => ucwords(strtolower($record->name)))
                         ->disabled(fn (Closure $get) => $get('regency_id') == null)
                 ]),
             Section::make('Ubah Kata Sandi')
