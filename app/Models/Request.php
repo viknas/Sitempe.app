@@ -34,9 +34,19 @@ class Request extends Model
         return $this->details()->sum(DB::raw('detail_penjualan.harga * detail_penjualan.jumlah_produk'));
     }
 
+    public static function generateRandomString($length = 10)
+    {
+        return substr(str_shuffle(str_repeat($x = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length / strlen($x)))), 1, $length);
+    }
+
     public static function boot()
     {
         parent::boot();
+        static::creating(function (Request $request) {
+            $request->code = 'R' . self::generateRandomString(5);
+        });
+
+
         static::saved(function (Request $request) {
             if (!$request->wasRecentlyCreated) {
                 if ($request->status = 'DIBATALKAN') {

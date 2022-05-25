@@ -1,7 +1,11 @@
 <x-filament::page>
   <div class="border border-gray-300 shadow-sm bg-white rounded-xl dark:bg-gray-800 p-6">
 
-    <div class="md:flex space-y-4 md:space-y-0">
+    <p class="text-2xl md:text-3xl text-primary-500 font-medium">
+      {{ $request->code }}
+    </p>
+
+    <div class="md:flex space-y-4 md:space-y-0 mt-5">
       <div>
         <p class="text-gray-500 dark:text-gray-300 font-medium">Reseller</p>
         <p class="text-gray-700 text-sm dark:text-gray-300">{{ $request->user->nama }}</p>
@@ -63,7 +67,7 @@
 
       @if (auth()->user()->isReseller())
         <x-filament::button class="mt-4" type="button" target="_blank" color="secondary" tag="a"
-          :href="'https://wa.me/082230734988?text=puntengopud'">
+          :href="'https://wa.me/082230734988?text=Halo admin TempeGo,%0asaya reseller TempeGo dengan nama: '.$request->user->nama. '%0aingin melakukan pembayaran untuk transaksi dengan nomor order: '.$request->code">
           Hubungi Pemilik
         </x-filament::button>
       @endif

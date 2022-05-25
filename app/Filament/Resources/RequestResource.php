@@ -107,6 +107,10 @@ class RequestResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('code')
+                    ->sortable()
+                    ->searchable()
+                    ->label('Kode'),
                 TextColumn::make('user.nama')
                     ->sortable()
                     ->searchable()

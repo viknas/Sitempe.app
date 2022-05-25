@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('penjualan_produk', function (Blueprint $table) {
             $table->id();
+            $table->string('code', 6)->nullable();
             $table->date('tanggal');
             $table->unsignedInteger('jumlah_produk')->default(0);
             $table->unsignedInteger('total_harga')->default(0);
