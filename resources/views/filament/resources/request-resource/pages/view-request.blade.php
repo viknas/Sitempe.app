@@ -67,7 +67,7 @@
 
       @if (auth()->user()->isReseller())
         <x-filament::button class="mt-4" type="button" target="_blank" color="secondary" tag="a"
-          :href="'https://wa.me/082230734988?text=Halo admin TempeGo,%0asaya reseller TempeGo dengan nama: '.$request->user->nama. '%0aingin melakukan pembayaran untuk transaksi dengan nomor order: '.$request->code">
+          :href="'https://wa.me/682230724988?text=Halo admin TempeGo,%0asaya reseller TempeGo dengan nama: '.$request->user->nama. '%0aingin melakukan pembayaran untuk transaksi dengan nomor order: '.$request->code">
           Hubungi Pemilik
         </x-filament::button>
       @endif
