@@ -20,6 +20,7 @@ return new class extends Migration
             "CREATE VIEW incomes_view
             AS
             SELECT
+                penjualan_produk.code AS kode,
                 penjualan_produk.id AS id,
                 penjualan_produk.tanggal AS tanggal,
                 SUM(detail_penjualan.jumlah_produk) AS total_produk,
@@ -32,7 +33,7 @@ return new class extends Migration
                 penjualan_produk
             LEFT JOIN detail_penjualan ON penjualan_produk.id = detail_penjualan.id_penjualan
             WHERE
-                penjualan_produk.status = 'DIKONFIRMASI' OR penjualan_produk.tipe = 'LANGSUNG'
+                penjualan_produk.status = 'SELESAI' OR penjualan_produk.tipe = 'LANGSUNG'
             GROUP BY
                 penjualan_produk.id;");
     }

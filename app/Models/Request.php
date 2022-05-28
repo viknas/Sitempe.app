@@ -49,7 +49,7 @@ class Request extends Model
 
         static::saved(function (Request $request) {
             if (!$request->wasRecentlyCreated) {
-                if ($request->status = 'DIBATALKAN') {
+                if ($request->status == 'DIBATALKAN') {
                     foreach ($request->details as $item) {
                         $product = $item->product;
                         $product->stok += $item->jumlah_produk;

@@ -13,6 +13,8 @@ class RequestDetail extends Model
     protected $guarded = ['id'];
     public $timestamps = false;
 
+    protected $touches = ['request'];
+
     public function product()
     {
         return $this->belongsTo(Product::class, 'id_produk');
@@ -38,6 +40,12 @@ class RequestDetail extends Model
                 $product->stok = ($product->stok + $item->getOriginal('jumlah_produk')) - $item->jumlah_produk;
                 $product->save();
             }
+        });
+
+        static::deleted(function (RequestDetail $item) {
+            $product = $item->product;
+            $product->stok = $product->stok + $item->jumlah_produk;
+            $product->save();
         });
     }
 }

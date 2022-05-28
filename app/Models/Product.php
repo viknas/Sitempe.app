@@ -14,11 +14,14 @@ class Product extends Model
     protected $table = 'produk';
     protected $guarded = ['id'];
 
-    public function sale()
+    public function saleDetail()
     {
-        return $this->hasManyThrough(Sale::class, SaleDetail::class, 'id_produk', 'id', 'id', 'id_penjualan')
-            ->where('tipe', '=', 'LANGSUNG')
-            ->orWhere('status', '=', 'SELESAI');
+        return $this->hasMany(SaleDetail::class, 'id_produk')
+            ->whereHas('sale', function ($query) {
+                return $query
+                    ->where('tipe', '=', 'LANGSUNG')
+                    ->orWhere('status', '=', 'SELESAI');
+            });
     }
 
     public function soldPerMonth()
@@ -26,8 +29,8 @@ class Product extends Model
 
         $startOfMonth = Carbon::now()->startOfMonth()->format('Y-m-d');
         $endOfMonth = Carbon::now()->endOfMonth()->format('Y-m-d');
-        return $this->sale
-            ->whereBetween('tanggal', [$startOfMonth, $endOfMonth])
-            ->sum('total_produk');
+        return $this->saleDetail()->whereHas('sale', function ($query) use ($startOfMonth, $endOfMonth) {
+                return $query->whereBetween('tanggal', [$startOfMonth, $endOfMonth]);
+            })->sum('jumlah_produk');
     }
 }

@@ -33,6 +33,9 @@ class IncomeResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('kode')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('tanggal')
                     ->searchable()
                     ->sortable(),

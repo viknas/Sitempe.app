@@ -33,7 +33,15 @@ class DatabaseSeeder extends Seeder
             'nama_produk' => 'testing',
             'harga' => 1000,
             'deskripsi' => 'sdafdsagda dasd',
-            'stok' => 20,
+            'stok' => 50,
+            'foto_produk' => 'tstse'
+        ]);
+
+        Product::create([
+            'nama_produk' => 'testing2',
+            'harga' => 2000,
+            'deskripsi' => 'sdafdsagda dasd',
+            'stok' => 100,
             'foto_produk' => 'tstse'
         ]);
 
