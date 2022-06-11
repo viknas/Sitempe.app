@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Filament\Models\Contracts\HasName;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable implements HasName, HasAvatar, FilamentUser
 {
@@ -84,5 +85,17 @@ class User extends Authenticatable implements HasName, HasAvatar, FilamentUser
     public function regency()
     {
         return $this->belongsTo(Regency::class, 'regency_id');
+    }
+
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::updated(function (User $model) {
+            if ($model->foto_profil != $model->getOriginal('foto_profil')) {
+                Storage::delete('public/' . $model->getOriginal('foto_profil'));
+            }
+        });
     }
 }

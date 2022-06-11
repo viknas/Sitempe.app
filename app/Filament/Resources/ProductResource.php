@@ -46,6 +46,7 @@ class ProductResource extends Resource
                             ->image()
                             ->required()
                             ->columnSpan(2)
+                            ->maxSize(2000)
                             ->imagePreviewHeight('300')
                             ->directory('productImages'),
                     ])
